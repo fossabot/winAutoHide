@@ -15,7 +15,7 @@ DATABASE_FILE_PATH = "./database"
 CONFIG_FILE_PATH = "./config.ini"
 DEFAULT_FREQUENCY = -1
 DEFAULT_PATTERN = r"^\."
-EXECUTABLE_NAME = "./Autohide.exe"
+EXECUTABLE_NAME = "./winAutoHide.exe"
 STARTUP_FOLDER = "\\".join((os.environ["APPDATA"],
                             r"Microsoft\Windows\Start Menu\Programs\Startup"))
 
@@ -27,7 +27,7 @@ class GUI:
         """Create tkinter widgets and display them."""
         # setup window
         self.master = master
-        self.master.title("Autohide")
+        self.master.title("winAutoHide")
         self.master.geometry()
         self.master.resizable(width=False, height=False)
 
@@ -261,8 +261,8 @@ def save_config(pattern: str, frequency: int):
 
 def run_on_system_startup():
     """Add program to system startup."""
-    #batch_file_path = STARTUP_FOLDER + "/Autohide.bat"
-    startup_file = STARTUP_FOLDER + "/Autohide.pyw"
+    #batch_file_path = STARTUP_FOLDER + "/winAutoHide.bat"
+    startup_file = STARTUP_FOLDER + "/winAutoHide.pyw"
     executable_path = os.path.realpath(EXECUTABLE_NAME)
 
     with open(startup_file, "w") as file:
@@ -274,8 +274,8 @@ def run_on_system_startup():
 
 def remove_from_system_startup():
     """Remove program from system startup."""
-    #batch_file_path = STARTUP_FOLDER + "/Autohide.bat"
-    startup_file = STARTUP_FOLDER + "/Autohide.pyw"
+    #batch_file_path = STARTUP_FOLDER + "/winAutoHide.bat"
+    startup_file = STARTUP_FOLDER + "/winAutoHide.pyw"
 
     if os.path.exists(startup_file):
         os.remove(startup_file)
