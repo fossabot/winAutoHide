@@ -261,20 +261,16 @@ def save_config(pattern: str, frequency: int):
 
 def run_on_system_startup():
     """Add program to system startup."""
-    #batch_file_path = STARTUP_FOLDER + "/winAutoHide.bat"
     startup_file = STARTUP_FOLDER + "/winAutoHide.pyw"
     executable_path = os.path.realpath(EXECUTABLE_NAME)
 
     with open(startup_file, "w") as file:
         file.write(f"from subprocess import call\n"
                    f"call(['{executable_path}', '--no-gui'])")
-    #with open(batch_file_path, "w") as file:
-    #    file.write(f"start \"\" /D \"{os.getcwd()}\" \"{executable_path}\" \"--no-gui\"")
 
 
 def remove_from_system_startup():
     """Remove program from system startup."""
-    #batch_file_path = STARTUP_FOLDER + "/winAutoHide.bat"
     startup_file = STARTUP_FOLDER + "/winAutoHide.pyw"
 
     if os.path.exists(startup_file):
