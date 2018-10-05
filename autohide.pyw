@@ -141,7 +141,7 @@ class GUI:
             self.toggle_directories_button.config(text="Show directories")
 
     def refresh_directories_treeview(self):
-        """Refresh the directories text widget."""
+        """Refresh the directories treeview widget."""
         old_columns = self.directories_treeview.get_children()
 
         for path in self.watchlist:
@@ -154,7 +154,7 @@ class GUI:
             self.directories_treeview.selection_set(self.directories_treeview.get_children()[-1])
 
     def start(self):
-        """Destroy current window and start the mainloop."""
+        """Destroy current window and start the mainloop of the background process."""
         save_watchlist(self.watchlist)
 
         pattern = self.pattern_entry.get()
@@ -181,7 +181,7 @@ def hide_files(files: set):
 
 
 def matches_pattern(pattern: str, string: str) -> bool:
-    """Check wehether string matches pattern."""
+    """Check whether string matches pattern."""
     regex = re.compile(pattern)
     search = regex.search(string)
     if search is not None:
@@ -222,7 +222,7 @@ def save_watchlist(watchlist: set):
         pickle.dump(watchlist, file)
 
 
-def load_watchlist():
+def load_watchlist() -> set:
     """Return watchlist from database."""
     if os.path.exists(DATABASE_FILE_PATH):
         with open(DATABASE_FILE_PATH, "rb") as file:
@@ -244,7 +244,7 @@ def create_config_file():
 
 
 def save_config(pattern: str, frequency: int):
-    """Save the above settings to the config file."""
+    """Save the settings to the config file."""
     if not os.path.exists(CONFIG_FILE_PATH):
         create_config_file()
 
@@ -297,6 +297,8 @@ def start_from_commandline():
         else:
             create_config_file()
             main_loop(data, DEFAULT_PATTERN, DEFAULT_FREQUENCY)
+    else:
+        print("No files in watchlist!")
 
 
 def start_gui():
