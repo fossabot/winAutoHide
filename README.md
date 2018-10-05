@@ -32,5 +32,12 @@ It also saves the current settings.
 The system startup buttons add or remove the program from the startup folder of the current user.
 This option currently only works when you have [Python](https://www.python.org/downloads/) installed globally.
 
+## Development
+The program is built solely with the Python standard library which means that it does not have any requirements except for Python.
+To work on it just clone it with git and install [Python 3](https://www.python.org/downloads/) if you haven't already.
+
+To compile the program into an executable (.exe file) [pyinstaller](https://www.pyinstaller.org/) is used.
+After you have installed it you can run `pyinstaller -F -w "winautohide.pyw"` which will output the exe file in the dist directory.
+
 ## License
 This repository uses the MIT License. A copy of it can be found in [LICENSE](https://github.com/jarikmarwede/winAutoHide/blob/master/LICENSE).
