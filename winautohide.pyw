@@ -16,8 +16,9 @@ CONFIG_FILE_PATH = "./config.ini"
 DEFAULT_FREQUENCY = -1
 DEFAULT_PATTERN = r"^\."
 EXECUTABLE_NAME = "./winAutoHide.exe"
-STARTUP_FOLDER = "\\".join((os.environ["APPDATA"],
-                            r"Microsoft\Windows\Start Menu\Programs\Startup"))
+STARTUP_FOLDER = "\\".join(
+    (os.environ["APPDATA"], r"Microsoft\Windows\Start Menu\Programs\Startup")
+)
 
 
 class GUI:
@@ -49,44 +50,57 @@ class GUI:
         self.treeview_frame = ttk.Frame(self.master)
         self.bottom_buttons = ttk.Frame(self.master)
 
-        self.pattern_label = ttk.Label(self.options_frame,
-                                       text="Pattern: ")
-        self.frequency_label = ttk.Label(self.options_frame,
-                                         text="Frequency: ")
+        self.pattern_label = ttk.Label(self.options_frame, text="Pattern: ")
+        self.frequency_label = ttk.Label(self.options_frame, text="Frequency: ")
         self.pattern_entry = ttk.Entry(self.options_frame)
         self.frequency_entry = ttk.Entry(self.options_frame)
-        self.directories_treeview = ttk.Treeview(self.treeview_frame,
-                                                 columns=("path",),
-                                                 selectmode="browse",
-                                                 show="tree")
+        self.directories_treeview = ttk.Treeview(
+            self.treeview_frame, columns=("path",), selectmode="browse", show="tree"
+        )
         self.directories_treeview.column("#0", minwidth=0, width=0)
         self.directories_treeview.column("path", width=400)
-        self.directories_treeview_scrollbar_y = ttk.Scrollbar(self.treeview_frame,
-                                                              orient=tk.VERTICAL,
-                                                              command=self.directories_treeview.yview)
-        self.directories_treeview_scrollbar_x = ttk.Scrollbar(self.treeview_frame,
-                                                              orient=tk.HORIZONTAL,
-                                                              command=self.directories_treeview.xview)
-        self.directories_treeview.config(yscrollcommand=self.directories_treeview_scrollbar_y.set)
-        self.directories_treeview.config(xscrollcommand=self.directories_treeview_scrollbar_x.set)
-        self.add_directory_button = ttk.Button(self.directory_buttons,
-                                               text="Add new directory",
-                                               command=self.add_directory)
-        self.remove_directory_button = ttk.Button(self.directory_buttons,
-                                                  text="Remove directory",
-                                                  command=self.remove_directory)
-        self.toggle_directories_button = ttk.Button(self.directory_buttons,
-                                                    text="Hide directories",
-                                                    command=self.toggle_directories)
-        self.start_button = ttk.Button(self.bottom_buttons,
-                                       text="Start",
-                                       command=self.start)
-        self.run_on_startup_button = ttk.Button(self.bottom_buttons,
-                                                text="Run on system startup",
-                                                command=run_on_system_startup)
-        self.remove_from_startup_button = ttk.Button(self.bottom_buttons,
-                                                     text="Remove from system startup",
-                                                     command=remove_from_system_startup)
+        self.directories_treeview_scrollbar_y = ttk.Scrollbar(
+            self.treeview_frame,
+            orient=tk.VERTICAL,
+            command=self.directories_treeview.yview,
+        )
+        self.directories_treeview_scrollbar_x = ttk.Scrollbar(
+            self.treeview_frame,
+            orient=tk.HORIZONTAL,
+            command=self.directories_treeview.xview,
+        )
+        self.directories_treeview.config(
+            yscrollcommand=self.directories_treeview_scrollbar_y.set
+        )
+        self.directories_treeview.config(
+            xscrollcommand=self.directories_treeview_scrollbar_x.set
+        )
+        self.add_directory_button = ttk.Button(
+            self.directory_buttons, text="Add new directory", command=self.add_directory
+        )
+        self.remove_directory_button = ttk.Button(
+            self.directory_buttons,
+            text="Remove directory",
+            command=self.remove_directory,
+        )
+        self.toggle_directories_button = ttk.Button(
+            self.directory_buttons,
+            text="Hide directories",
+            command=self.toggle_directories,
+        )
+        self.start_button = ttk.Button(
+            self.bottom_buttons, text="Start", command=self.start
+        )
+        self.run_on_startup_button = ttk.Button(
+            self.bottom_buttons,
+            text="Run on system startup",
+            command=run_on_system_startup,
+        )
+        self.remove_from_startup_button = ttk.Button(
+            self.bottom_buttons,
+            text="Remove from system startup",
+            command=remove_from_system_startup,
+        )
 
         # display widgets
         self.options_frame.grid(row=0, column=0, pady=10, padx=20)
@@ -123,7 +137,9 @@ class GUI:
 
     def remove_directory(self):
         selected_column = self.directories_treeview.selection()
-        selected_column_path = self.directories_treeview.item(selected_column, "values")[0]
+        selected_column_path = self.directories_treeview.item(
+            selected_column, "values"
+        )[0]
 
         self.watchlist.remove(selected_column_path)
         self.directories_treeview.delete(selected_column)
@@ -151,7 +167,9 @@ class GUI:
             self.directories_treeview.delete(*old_columns)
 
         if self.watchlist:
-            self.directories_treeview.selection_set(self.directories_treeview.get_children()[-1])
+            self.directories_treeview.selection_set(
+                self.directories_treeview.get_children()[-1]
+            )
 
     def start(self):
         """Destroy current window and start the mainloop of the background process."""
@@ -201,7 +219,9 @@ def get_matching_files(pattern: str, path: str) -> set:
         if matches_pattern(pattern, file):
             matching_files.add("".join((path, "\\", file)))
         elif os.path.isdir("".join((path, "\\", file))):
-            matching_files = matching_files | get_matching_files(pattern, "".join((path, "\\", file)))
+            matching_files = matching_files | get_matching_files(
+                pattern, "".join((path, "\\", file))
+            )
     return matching_files
 
 
@@ -265,8 +285,9 @@ def run_on_system_startup():
     executable_path = os.path.realpath(EXECUTABLE_NAME)
 
     with open(startup_file, "w") as file:
-        file.write(f"from subprocess import call\n"
-                   f"call(['{executable_path}', '--no-gui'])")
+        file.write(
+            f"from subprocess import call\n" f"call(['{executable_path}', '--no-gui'])"
+        )
 
 
 def remove_from_system_startup():
